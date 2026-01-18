@@ -1,0 +1,25 @@
+export const siteConfig = {
+  brand: "West County Fitness",
+  slogan: "Home of West County Boxing Club!",
+  city: "Chesterfield, Missouri",
+  address: "62 Four Seasons Shopping Center, Chesterfield, MO 63017",
+  phone: "+14045098600",
+  phoneDisplay: "(404) 509-8600",
+  email: "jway82@yahoo.com",
+  mapUrl: "https://maps.google.com/?q=62+Four+Seasons+Shopping+Center+Chesterfield+MO+63017",
+  hours: {
+    weekday: "Mon–Sat: 6:00 AM – 7:00 PM",
+    weekend: "Sunday: Closed",
+  },
+  bio: "17+ years of experience helping clients achieve their fitness goals through personalized training, boxing, and nutrition coaching. Certified by ACE, NESTA, and USA Boxing.",
+  social: [
+    { platform: "facebook", url: "https://facebook.com/westcountyfitness" },
+    { platform: "instagram", url: "https://instagram.com/westcountyfitness" },
+    { platform: "youtube", url: "https://youtube.com/@westcountyfitness" },
+    { platform: "tiktok", url: "https://tiktok.com/@westcountyfitness" },
+    { platform: "twitter", url: "https://twitter.com/westcountyfit" },
+    { platform: "linkedin", url: "https://linkedin.com/company/westcountyfitness" },
+    { platform: "threads", url: "https://threads.net/@westcountyfitness" },
+    { platform: "google", url: "https://g.page/westcountyfitness" },
+  ],
+}

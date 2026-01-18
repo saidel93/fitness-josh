@@ -1,7 +1,4 @@
-'use client'
-
-import { useParams, useRouter } from 'next/navigation'
-import { motion } from 'framer-motion'
+import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import {
   Calendar,
@@ -13,10 +10,14 @@ import {
 } from 'lucide-react'
 import { PortableText } from '@portabletext/react'
 import CTAButton from '@/components/cta-button'
-import { useEffect, useState } from 'react'
 import { client, urlFor } from '@/lib/sanity.client'
 import { blogPostBySlugQuery } from '@/lib/sanity.queries'
 import { BlogPost } from '@/types/blog'
+
+// Force dynamic rendering for this page
+export const dynamic = 'force-dynamic'
+// OR use revalidation instead
+// export const revalidate = 60 // Revalidate every 60 seconds
 
 // Portable Text components for rich text rendering
 const portableTextComponents = {
@@ -88,59 +89,31 @@ const portableTextComponents = {
   },
 }
 
-export default function BlogPost() {
-  const params = useParams()
-  const router = useRouter()
-  const slug = params.slug as string
-
-  const [post, setPost] = useState<BlogPost | null>(null)
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    async function fetchPost() {
-      try {
-        const fetchedPost = await client.fetch(blogPostBySlugQuery, { slug })
-        setPost(fetchedPost)
-      } catch (error) {
-        console.error('Error fetching post:', error)
-        setPost(null)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchPost()
-  }, [slug])
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center px-4">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red mx-auto mb-4"></div>
-          <p className="text-white/70">Loading post...</p>
-        </div>
-      </div>
+async function getBlogPost(slug: string): Promise<BlogPost | null> {
+  try {
+    const post = await client.fetch(
+      blogPostBySlugQuery,
+      { slug },
+      { cache: 'no-store' },
     )
+    return post
+  } catch (error) {
+    console.error('Error fetching post:', error)
+    return null
   }
+}
+
+export default async function BlogPost({
+  params,
+}: {
+  params: { slug: string }
+}) {
+  const post = await getBlogPost(params.slug)
 
   if (!post) {
-    return (
-      <div className="min-h-screen flex items-center justify-center px-4">
-        <div className="text-center">
-          <h1 className="text-3xl font-heading mb-4">Post Not Found</h1>
-          <p className="text-white/70 mb-6">
-            The blog post you're looking for doesn't exist.
-          </p>
-          <CTAButton onClick={() => router.push('/blog')} variant="primary">
-            <ArrowLeft className="w-4 h-4" />
-            Back to Blog
-          </CTAButton>
-        </div>
-      </div>
-    )
+    notFound()
   }
 
-  const shareUrl = typeof window !== 'undefined' ? window.location.href : ''
   const formattedDate = new Date(post.publishedAt).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
@@ -158,10 +131,7 @@ export default function BlogPost() {
             <ArrowLeft className="w-4 h-4" />
             <span>Back to Blog</span>
           </Link>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
+          <div>
             <div className="flex items-center gap-4 text-sm text-white/60 mb-4">
               <div className="flex items-center gap-1">
                 <Calendar className="w-4 h-4" />
@@ -191,7 +161,7 @@ export default function BlogPost() {
               <div className="flex gap-2">
                 <a
                   href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-                    shareUrl
+                    typeof window !== 'undefined' ? window.location.href : '',
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -201,9 +171,7 @@ export default function BlogPost() {
                   <Facebook className="w-5 h-5" />
                 </a>
                 <a
-                  href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
-                    shareUrl
-                  )}&text=${encodeURIComponent(post.title)}`}
+                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-10 h-10 bg-white/10 hover:bg-red rounded-lg flex items-center justify-center transition-colors"
@@ -212,9 +180,7 @@ export default function BlogPost() {
                   <Twitter className="w-5 h-5" />
                 </a>
                 <a
-                  href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
-                    shareUrl
-                  )}`}
+                  href={`https://www.linkedin.com/sharing/share-offsite/`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-10 h-10 bg-white/10 hover:bg-red rounded-lg flex items-center justify-center transition-colors"
@@ -224,16 +190,14 @@ export default function BlogPost() {
                 </a>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       <section className="py-12 px-4 sm:px-6">
         <div className="max-w-4xl mx-auto">
           {post.mainImage ? (
-            <motion.img
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
+            <img
               src={urlFor(post.mainImage).width(1200).height(675).url()}
               alt={post.mainImage.alt || post.title}
               className="w-full aspect-video object-cover rounded-xl mb-12"
@@ -247,12 +211,7 @@ export default function BlogPost() {
             </div>
           )}
 
-          <motion.article
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="prose prose-invert prose-lg max-w-none"
-          >
+          <article className="prose prose-invert prose-lg max-w-none">
             <div className="text-white/80 leading-relaxed space-y-6">
               {post.body ? (
                 <PortableText
@@ -265,7 +224,7 @@ export default function BlogPost() {
                 </p>
               )}
             </div>
-          </motion.article>
+          </article>
         </div>
       </section>
 
@@ -277,13 +236,11 @@ export default function BlogPost() {
           <p className="text-white/80 mb-6">
             Get personalized coaching and achieve your fitness goals.
           </p>
-          <CTAButton
-            onClick={() => router.push('/schedule')}
-            variant="primary"
-            size="lg"
-          >
-            Book Your Session
-          </CTAButton>
+          <Link href="/schedule">
+            <CTAButton variant="primary" size="lg">
+              Book Your Session
+            </CTAButton>
+          </Link>
         </div>
       </section>
     </div>

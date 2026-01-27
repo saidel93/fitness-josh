@@ -8,12 +8,7 @@ const Footer = () => {
   const socialIcons: Record<string, React.ComponentType<{ className?: string }>> = {
     facebook: Facebook,
     instagram: Instagram,
-    youtube: Youtube,
-    twitter: Twitter,
-    linkedin: Linkedin,
-    tiktok: Twitter,
-    threads: Twitter,
-    google: MapPin,
+   
   }
 
   return (

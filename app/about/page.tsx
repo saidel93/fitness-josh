@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { motion } from "framer-motion"
 import { Award, Target, Heart, Shield } from "lucide-react"
 import SectionHeader from "@/components/section-header"
@@ -48,40 +49,57 @@ export default function About() {
 
   return (
     <div>
+      {/* ABOUT */}
       <section className="py-20 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
           <SectionHeader title="About West County Fitness" subtitle="Meet Your Coach" />
+
           <div className="mt-12 grid md:grid-cols-2 gap-12 items-center">
+            {/* IMAGE */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="aspect-square bg-white/5 rounded-2xl overflow-hidden flex items-center justify-center"
+              className="aspect-square rounded-2xl overflow-hidden"
             >
-              <div className="text-center p-12 text-white/40">
-                <div className="text-8xl mb-4">👤</div>
-                <div className="text-xl">Coach Photo Placeholder</div>
-              </div>
+              <Image
+                src="/3-1.jpg"
+                alt="Coach at West County Fitness"
+                width={600}
+                height={600}
+                className="w-full h-full object-cover"
+                priority
+              />
             </motion.div>
-            <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
+
+            {/* TEXT */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
               <h3 className="text-2xl font-heading mb-4">17+ Years of Transforming Lives</h3>
+
               <div className="space-y-4 text-white/80 leading-relaxed">
                 <p>
-                  Welcome to {siteConfig.brand}, where passion meets expertise. With over 17 years of experience in
-                  personal training and boxing coaching, I've dedicated my career to helping people achieve their
-                  fitness goals through personalized training, boxing instruction, and comprehensive nutrition guidance.
+                  Welcome to {siteConfig.brand}, where passion meets expertise. With over 17 years of
+                  experience in personal training and boxing coaching, I've dedicated my career to
+                  helping people achieve their fitness goals through personalized training, boxing
+                  instruction, and comprehensive nutrition guidance.
                 </p>
+
                 <p>
-                  My approach combines the discipline and intensity of boxing with proven strength and conditioning
-                  methods to deliver real, measurable results. Whether you're looking to lose weight, build muscle,
-                  learn self-defense, or compete in boxing, I'll create a customized program that fits your goals,
-                  schedule, and fitness level.
+                  My approach combines the discipline and intensity of boxing with proven strength and
+                  conditioning methods to deliver real, measurable results. Whether you're looking to
+                  lose weight, build muscle, learn self-defense, or compete in boxing, I'll create a
+                  customized program that fits your goals, schedule, and fitness level.
                 </p>
+
                 <p>
-                  What sets {siteConfig.brand} apart is the personal attention and accountability you'll receive. Every
-                  client gets a tailored program, proper technique instruction, and ongoing support to ensure success. I
-                  believe in building not just stronger bodies, but also confidence, discipline, and lifelong healthy
-                  habits.
+                  What sets {siteConfig.brand} apart is the personal attention and accountability
+                  you'll receive. Every client gets a tailored program, proper technique instruction,
+                  and ongoing support to ensure success. I believe in building not just stronger
+                  bodies, but also confidence, discipline, and lifelong healthy habits.
                 </p>
               </div>
             </motion.div>
@@ -89,9 +107,11 @@ export default function About() {
         </div>
       </section>
 
+      {/* CERTIFICATIONS */}
       <section className="py-20 px-4 sm:px-6 bg-navy-light">
         <div className="max-w-7xl mx-auto">
           <SectionHeader title="Certifications & Credentials" subtitle="Qualified Expertise" />
+
           <div className="mt-12 grid md:grid-cols-3 gap-8">
             {certifications.map((cert, idx) => {
               const Icon = cert.icon
@@ -117,9 +137,11 @@ export default function About() {
         </div>
       </section>
 
+      {/* PHILOSOPHY */}
       <section className="py-20 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
           <SectionHeader title="Training Philosophy" subtitle="Our Approach" />
+
           <div className="mt-12 grid md:grid-cols-3 gap-8">
             {philosophy.map((item, idx) => {
               const Icon = item.icon
@@ -141,23 +163,27 @@ export default function About() {
               )
             })}
           </div>
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="mt-16 bg-navy-light border border-white/10 rounded-xl p-8 max-w-4xl mx-auto"
           >
-            <h3 className="text-2xl font-heading mb-4 text-center">Periodization & Progressive Training</h3>
+            <h3 className="text-2xl font-heading mb-4 text-center">
+              Periodization & Progressive Training
+            </h3>
             <p className="text-white/80 leading-relaxed text-center">
-              Our training methodology is built on periodization principles – systematically varying training intensity,
-              volume, and focus to ensure continuous progress while preventing plateaus and overtraining. Combined with
-              boxing fundamentals, strength training, and conditioning work, this approach delivers sustainable,
-              long-term results.
+              Our training methodology is built on periodization principles – systematically varying
+              training intensity, volume, and focus to ensure continuous progress while preventing
+              plateaus and overtraining. Combined with boxing fundamentals, strength training, and
+              conditioning work, this approach delivers sustainable, long-term results.
             </p>
           </motion.div>
         </div>
       </section>
 
+      {/* CONTACT */}
       <section className="py-20 px-4 sm:px-6">
         <div className="max-w-5xl mx-auto">
           <ContactStrip />

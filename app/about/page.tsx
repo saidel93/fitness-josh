@@ -60,14 +60,14 @@ export default function About() {
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="aspect-square rounded-2xl overflow-hidden"
+              className="relative aspect-square rounded-2xl overflow-hidden bg-navy-light"
             >
               <Image
                 src="/3-1.jpg"
                 alt="Coach at West County Fitness"
                 width={600}
                 height={600}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain"
                 priority
               />
             </motion.div>
@@ -78,11 +78,11 @@ export default function About() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              <h3 className="text-2xl font-heading mb-4">17+ Years of Transforming Lives</h3>
+              <h3 className="text-2xl font-heading mb-4">20+ Years of Transforming Lives</h3>
 
               <div className="space-y-4 text-white/80 leading-relaxed">
                 <p>
-                  Welcome to {siteConfig.brand}, where passion meets expertise. With over 17 years of
+                  Welcome to {siteConfig.brand}, where passion meets expertise. With over 20 years of
                   experience in personal training and boxing coaching, I've dedicated my career to
                   helping people achieve their fitness goals through personalized training, boxing
                   instruction, and comprehensive nutrition guidance.
